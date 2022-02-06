@@ -1,5 +1,6 @@
 from db.base_class import Base
 from sqlalchemy import Boolean, String, Column, Integer, Date
+from sqlalchemy.orm import relationship
 
 
 class Users(Base):
@@ -10,3 +11,4 @@ class Users(Base):
     date_created = Column(Date)
     is_active = Column(Boolean(), default=True)
     is_superuser = Column(Boolean(), default=False)
+    posts = relationship('Posts', back_populates='user')
