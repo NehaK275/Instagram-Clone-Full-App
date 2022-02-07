@@ -11,8 +11,12 @@ def create_post(given_post: PostCreate, db: Session):
         caption=given_post.caption,
         timestamp=datetime.now(),
         creator_id=given_post.creator_id
-        )
+    )
     db.add(new_post)
     db.commit()
     db.refresh(new_post)
     return new_post
+
+
+def get_all_posts(db: Session):
+    return db.query(Posts).all()

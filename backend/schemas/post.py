@@ -18,8 +18,8 @@ class User(BaseModel):
 
 class PostShow(BaseModel):
     id: int
-    image_url: str
-    image_url_type: str
+    img_url: str
+    img_url_type: str
     caption: str
     timestamp: datetime
     user: User

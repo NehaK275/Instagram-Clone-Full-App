@@ -5,3 +5,4 @@ sqlalchemy
 psycopg2
 pydantic[email]
 passlib[bcrypt]
+python-multipart
