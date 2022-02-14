@@ -9,6 +9,8 @@ from db.session import get_db
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
 from schemas.post import PostShow, PostCreate
 from sqlalchemy.orm import Session
+from schemas.user import UserCreate
+from api.routes.route_login import get_current_user_from_token
 
 router = APIRouter()
 
@@ -26,15 +28,15 @@ def get_unique_random_name():
 
 
 @router.post("/create", response_model=PostShow)
-def create_new_post(given_post: PostCreate, db: Session = Depends(get_db)):
+def create_new_post(given_post: PostCreate, db: Session = Depends(get_db), current_user: UserCreate = Depends(get_current_user_from_token)):
     if not given_post.img_url_type in img_url_types:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                             detail="Image url type can only be: ""Absolute / Relative.")
-    return create_post(given_post=given_post, db=db)
+    return create_post(given_post=given_post, db=db, current_user=current_user)
 
 
 @router.post("/image")
-def upload_image(image: UploadFile = File(...)):
+def upload_image(image: UploadFile = File(...), current_user: UserCreate = Depends(get_current_user_from_token)):
     allowed_formats = ['.png', '.jpg', 'jpeg', '.png', '.bmp']
     format_file = image.filename[image.filename.rfind('.'):].lower()
     if format_file in allowed_formats:

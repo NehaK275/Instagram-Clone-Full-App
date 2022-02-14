@@ -6,7 +6,6 @@ class PostCreate(BaseModel):
     img_url: str
     img_url_type: str
     caption: str
-    creator_id: int
 
 
 class User(BaseModel):
