@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 from datetime import datetime
+from typing import List
+from schemas.comment import CommentShow
 
 
 class PostCreate(BaseModel):
@@ -22,6 +24,7 @@ class PostShow(BaseModel):
     caption: str
     timestamp: datetime
     user: User
+    comments: List[CommentShow]
 
     class Config:  # to convert non dict obj to json
         orm_mode = True

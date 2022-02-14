@@ -4,7 +4,7 @@ from typing import List
 import datetime
 import os
 
-from db.repository.posts import create_post, get_all_posts
+from db.repository.posts import create_post, get_all_posts, delete_post_by_id
 from db.session import get_db
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
 from schemas.post import PostShow, PostCreate
@@ -52,3 +52,8 @@ def upload_image(image: UploadFile = File(...), current_user: UserCreate = Depen
 @router.get("/all", response_model=List[PostShow])
 def get_all(db: Session = Depends(get_db)):
     return get_all_posts(db)
+
+
+@router.delete("/delete/{id}")
+def delete_post(id: int, db: Session = Depends(get_db), current_user: UserCreate = Depends(get_current_user_from_token)):
+    return delete_post_by_id(post_id=id, current_user=current_user, db=db)

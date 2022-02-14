@@ -11,3 +11,4 @@ class Posts(Base):
     timestamp = Column(DateTime)
     creator_id = Column(Integer, ForeignKey('users.id'))
     user = relationship('Users', back_populates='posts')
+    comments = relationship('Comments', back_populates='post')
