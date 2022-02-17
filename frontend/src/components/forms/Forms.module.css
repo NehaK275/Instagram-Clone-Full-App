@@ -1,0 +1,61 @@
+.loginForm {
+    margin: auto;
+    margin-top: 20px;
+    width: 25%;
+    border: 1px solid lightgray;
+    display: flex;
+    flex-direction: column;
+    transition: all ease 0.5s;
+}
+
+.loginForm input {
+    margin: auto;
+    width: 80%;
+    text-align: left;
+    border: 1px lightgray solid;
+    padding: 13px 0 7px 8px;
+    border-radius: 3px;
+    background: #fafafa;
+    outline: none;
+    font-size: 13px;
+}
+
+.loginForm input:first-child {
+    margin-top: 10px;
+}
+
+.loginForm input:nth-child(2) {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.loginForm button {
+    cursor: pointer;
+    margin: 18px auto;
+    width: 80%;
+    background-color: #0095f6;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #fff;
+    padding: 8px 9px;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.logo {
+    margin: 0;
+    padding: 1.8rem 1.3rem 1.1rem 1.3rem;
+    object-fit: contain;
+}
+
+@media only screen and (max-width: 1200px) {
+    .loginForm {
+        width: 45%;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .loginForm {
+        width: 85%;
+    }
+}

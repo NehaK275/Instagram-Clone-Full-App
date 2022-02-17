@@ -1,0 +1,48 @@
+.container {
+    position: sticky;
+    height: 22px;
+    top: 0;
+    z-index: 1;
+    background-color: #fff;
+    border: 1px solid lightgray;
+    display: flex;
+    object-fit: contain;
+    align-items: center;
+    padding: 17px;
+    justify-content: space-between;
+}
+
+.logo {
+    object-fit: contain;
+    width: 200px;
+}
+
+.menu a, button{
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+    outline: none;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 28px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    margin: 1px;
+    padding: 5px 9px;
+    color: #fff;
+    background-color: #0095f6;
+}
+
+.logout {
+    cursor: pointer;
+    padding: 1px 9px;
+}
+
+.register {
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    border: none !important;
+    background-color: #fff !important;
+    color: #0095f6 !important;
+    margin-left: 12px !important;
+}
