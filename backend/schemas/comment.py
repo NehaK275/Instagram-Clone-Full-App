@@ -9,6 +9,7 @@ class CommentCreate(BaseModel):
 
 class CommentShow(BaseModel):
     id: int
+    owned: bool
     username: str
     text: str
     timestamp: datetime

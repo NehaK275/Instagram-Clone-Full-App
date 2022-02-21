@@ -1,16 +1,15 @@
 import random
 import string
-from typing import List
+from typing import List, Dict
 import datetime
 import os
-
-from db.repository.posts import create_post, get_all_posts, delete_post_by_id
+from db.repository.posts import create_post, get_all_posts, delete_post_by_id, addImageToDB
 from db.session import get_db
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
 from schemas.post import PostShow, PostCreate
 from sqlalchemy.orm import Session
 from schemas.user import UserCreate
-from api.routes.route_login import get_current_user_from_token
+from api.routes.route_login import get_current_user_from_token, get_if_user
 
 router = APIRouter()
 
@@ -36,7 +35,7 @@ def create_new_post(given_post: PostCreate, db: Session = Depends(get_db), curre
 
 
 @router.post("/image")
-def upload_image(image: UploadFile = File(...), current_user: UserCreate = Depends(get_current_user_from_token)):
+def upload_image(image: UploadFile = File(...), current_user: UserCreate = Depends(get_current_user_from_token), db: Session = Depends(get_db)):
     allowed_formats = ['.png', '.jpg', 'jpeg', '.png', '.bmp']
     format_file = image.filename[image.filename.rfind('.'):].lower()
     if format_file in allowed_formats:
@@ -44,14 +43,18 @@ def upload_image(image: UploadFile = File(...), current_user: UserCreate = Depen
         path = f'./images/{unique_name}'
         with open(path, "w+b") as file_object:
             file_object.write(image.file.read())
-        return {"detail": "succeed", "path": path}
+        if addImageToDB(path=path, current_user=current_user, db=db):
+            return {"detail": "succeed", "path": path}
+        else:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                                detail="Error came from the server, We're currently unavailable")
     raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                         detail="Images formats must be: png/jpg/jpeg/bmp")
 
 
 @router.get("/all", response_model=List[PostShow])
-def get_all(db: Session = Depends(get_db)):
-    return get_all_posts(db)
+def get_all(db: Session = Depends(get_db), account: UserCreate = Depends(get_if_user)):
+    return get_all_posts(db, account)
 
 
 @router.delete("/delete/{id}")

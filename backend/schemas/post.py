@@ -19,6 +19,7 @@ class User(BaseModel):
 
 class PostShow(BaseModel):
     id: int
+    owned: bool
     img_url: str
     img_url_type: str
     caption: str

@@ -1,46 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import styles from './Posts.module.css';
-import { Avatar, Button } from '@material-ui/core';
-
-const BASE_URL = "http://localhost:8000/"
+import { Avatar } from '@material-ui/core';
+import Comments from '../comments/Comments';
+import PostsContext from '../../store/posts-context/posts-context';
 
 const Post = ({ post }) => {
-  const [imgUrl, setImgUrl] = useState('');
-  const [comments, setComments] = useState();
+  const postsCtx = useContext(PostsContext);
 
-  useEffect(() => {
-    if (post.img_url_type == 'absolute') {
-      setImgUrl(post.img_url);
-    } else {
-      setImgUrl(BASE_URL + post.img_url);
-    }
-  }, []);
-
-  useEffect(() => {
-    setComments(post.comments);
-  }, []);
+  const deletePostHandler = () => {
+    postsCtx.deletePost(post.id);
+  }
 
   return (
     <div className={styles.post}>
       <div className={styles.postHeader}>
         <Avatar alt={post.user.username} />
-        <div className={styles.postHeaderInfo}>
-          <h3>{post.user.username}</h3>
-          <Button className={styles.delete} children="Delete"/>
+        <div className={styles.postInfo}>
+          <h3>{post.user.username}</h3>     
+          {post.owned && <button className={styles.delete} children="Delete" onClick={deletePostHandler} />}
         </div>
       </div>
-      <img className={styles.postImg} src={imgUrl} />
+      <img className={styles.postImg} src={post.img_url_type === 'relative' ? "http://localhost:8000/" + post.img_url : post.img_url} />
       <h4 className={styles.caption}>{post.caption}</h4>
-      <div className={styles.comments}>
-        {
-          post.comments.map(comment => (
-            <p>
-              <strong>{comment.username}: </strong>
-              {comment.text}
-            </p>
-          ))
-        }
-      </div>
+      <Comments comments={post.comments} forPost={post.id} />
     </div>
   );
 }

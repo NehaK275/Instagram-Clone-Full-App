@@ -1,8 +1,10 @@
-from fastapi import Depends, HTTPException, status, APIRouter
+from fastapi import Depends, HTTPException, status, APIRouter, Header
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security.utils import get_authorization_scheme_param
 from jose import JWTError
 from db.session import get_db
 from sqlalchemy.orm import Session
+from schemas.user import UserCreate
 from core.hashing import Hasher
 from db.repository.users import get_user_by_username
 from core.security import decode_jwt_access_token, encode_jwt_access_token
@@ -26,6 +28,7 @@ def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(
             "username": user.username,
             "user_id": user.id
         }),
+        "username": user.username,
         "token_type": "bearer"
     }
 
@@ -33,6 +36,7 @@ def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 
 
+# If not user => Throw 401 exception
 def get_current_user_from_token(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     try:
         username = decode_jwt_access_token(token).get("username")
@@ -44,3 +48,12 @@ def get_current_user_from_token(token: str = Depends(oauth2_scheme), db: Session
     if user is None:
         raise credentials_exception
     return user
+
+
+# If not user (by authorization header) => Simply return false, else return that user
+def get_if_user(authorization: str = Header(None), db: Session = Depends(get_db)):
+    try:
+        scheme, param = get_authorization_scheme_param(authorization)
+        return get_current_user_from_token(token=param, db=db)
+    except Exception as e:
+        return False

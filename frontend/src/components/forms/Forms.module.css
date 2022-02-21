@@ -1,4 +1,4 @@
-.loginForm {
+.form {
     margin: auto;
     margin-top: 20px;
     width: 25%;
@@ -8,7 +8,7 @@
     transition: all ease 0.5s;
 }
 
-.loginForm input {
+.form input {
     margin: auto;
     width: 80%;
     text-align: left;
@@ -20,16 +20,20 @@
     font-size: 13px;
 }
 
-.loginForm input:first-child {
+.form input:first-child {
     margin-top: 10px;
 }
 
-.loginForm input:nth-child(2) {
+.form input:nth-child(2) {
     margin-top: 10px;
     margin-bottom: 20px;
 }
 
-.loginForm button {
+.form input:nth-child(3) {
+    margin-bottom: 20px;
+}
+
+.form button {
     cursor: pointer;
     margin: 18px auto;
     width: 80%;
@@ -42,10 +46,49 @@
     font-size: 15px;
 }
 
+.upload {
+    display: flex;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+}
+
+.upload input {
+    margin: 1.3rem;
+    width: 80%;
+    text-align: left;
+    border: 1px lightgray solid;
+    padding: 13px 0 7px 8px;
+    border-radius: 3px;
+    background: #fafafa;
+    outline: none;
+    font-size: 13px;
+}
+
 .logo {
     margin: 0;
     padding: 1.8rem 1.3rem 1.1rem 1.3rem;
     object-fit: contain;
+}
+.altContainer {
+    margin-top: 3rem;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.altContainer h3 {
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 2rem;
+}
+
+.altContainer a {
+    color:#0095f6;
 }
 
 @media only screen and (max-width: 1200px) {
